@@ -1,0 +1,49 @@
+# Java 관련 파일
+*.class
+*.jar
+*.war
+*.ear
+
+# 로그 파일
+*.log
+
+# 패키징 디렉토리
+/target/
+/out/
+/build/
+
+# Gradle 관련 파일
+.gradle/
+/build/
+/!gradle-wrapper.jar
+.gradle/cache/
+/.gradle/gradle-app.setting
+.gradle/gradle-build.setting
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# OS 별 파일
+.DS_Store
+Thumbs.db
+
+# 환경 변수 파일
+.env
+
+# Spring Boot 개발용 파일
+spring.log
+
+# 빌드 결과물
+*.war
+*.ear
+*.jar

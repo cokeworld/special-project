@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+            <h1 class="text-center">Sign Up</h1>
+            <form id="signupForm">
+                <div class="form-group mb-3">
+                    <label for="signupName">Name</label>
+                    <input type="text" class="form-control" id="signupName" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="signupId">ID</label>
+                    <input type="text" class="form-control" id="signupId" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" class="form-control" id="signupPassword" required>
+                    <div id="passwordValidationMessage" class="mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" required>
+                    <div id="passwordMatchMessage" class="mt-2"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" class="form-control" id="signupEmail" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        function validatePassword(password) {
+            const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{1,10}$/;
+            return regex.test(password);
+        }
+
+        $('#signupPassword').on('keyup', function() {
+            const password = $(this).val();
+            const message = $('#passwordValidationMessage');
+
+            if (!validatePassword(password)) {
+                message.text('Password must be up to 10 characters long, and include at least one letter, one number, and one special character.').css('color', 'red');
+            } else {
+                message.text('Password is valid.').css('color', 'green');
+            }
+
+            // 비밀번호 일치 여부도 같이 체크
+            const confirmPassword = $('#confirmPassword').val();
+            const matchMessage = $('#passwordMatchMessage');
+            if (password === confirmPassword) {
+                matchMessage.text('Passwords match.').css('color', 'green');
+            } else {
+                matchMessage.text('Passwords do not match.').css('color', 'red');
+            }
+        });
+
+        $('#confirmPassword').on('keyup', function() {
+            const password = $('#signupPassword').val();
+            const confirmPassword = $(this).val();
+            const message = $('#passwordMatchMessage');
+
+            if (password === confirmPassword) {
+                message.text('Passwords match.').css('color', 'green');
+            } else {
+                message.text('Passwords do not match.').css('color', 'red');
+            }
+        });
+
+        $('#signupForm').on('submit', function(event) {
+            event.preventDefault(); // 폼 제출 기본 동작 방지
+            const name = $('#signupName').val();
+            const userId = $('#signupId').val();
+            const password = $('#signupPassword').val();
+            const confirmPassword = $('#confirmPassword').val();
+            const email = $('#signupEmail').val();
+
+            // 비밀번호 유효성 확인
+            if (!validatePassword(password)) {
+                alert('Password does not meet the required criteria.');
+                return;
+            }
+
+            // 비밀번호 일치 확인
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            // 여기에 실제 회원가입 로직을 추가해야 합니다.
+            // 예시로 간단히 콘솔에 출력
+            console.log({
+                name,
+                userId,
+                password,
+                email
+            });
+
+            alert('회원가입이 완료되었습니다.');
+            window.location.href = 'index.html'; // 회원가입 완료 후 메인 페이지로 이동
+        });
+    });
+</script>
+</body>
+</html>
