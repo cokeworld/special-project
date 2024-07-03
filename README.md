@@ -23,7 +23,7 @@
   - MyBatis 3.5
   - H2 / MariaDB(사용 예정)
   - Spring Security(사용 예정)
-  - AWS(사용 예정)
+  - AWS EC2(사용 예정)
 
 #### `Front-end`
 
