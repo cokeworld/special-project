@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class DeliverySaveRequestDto {
+    // id는 auto increment
     private String title;
     private int deliveryCompanyId;
     private String deliveryNumber;
@@ -26,13 +27,13 @@ public class DeliverySaveRequestDto {
         this.memberId = memberId;
     }
 
-//    public Delivery toEntity() {
-//        return Delivery.builder()
-//                .title(title)
-//                .deliveryCompanyId(deliveryCompanyId)
-//                .deliveryNumber(deliveryNumber)
-//                .status(status)
-//                .memberId(memberId)
-//                .build();
-//    }
+    public Delivery toEntity() {
+        return Delivery.builder()
+                .title(title)
+                .deliveryCompanyId(deliveryCompanyId)
+                .deliveryNumber(deliveryNumber)
+                .status(status)
+                .memberId(memberId)
+                .build();
+    }
 }
