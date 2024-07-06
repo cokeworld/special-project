@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Bulletin Board</title>
+    <title>택배맨 - 택배 추적 관리 서비스</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
           th:href="@{/css/external/bootstrap.min.css}" rel="stylesheet">
 </head>
@@ -27,109 +27,51 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
-            <h1>Bulletin Board</h1>
+            <h1>택배맨📦</h1>
             <table class="table">
+
                 <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Courier</th>
-                    <th scope="col">Visibility</th>
-                    <th scope="col">Tracking Number</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">택배 상품</th>
+                    <th scope="col">택배사</th>
+                    <th scope="col">운송장번호</th>
+                    <th scope="col">노출</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
+
                 <tbody id="tableBody">
                 <tr>
-                    <td><input type="text" class="form-control" placeholder="Enter name"></td>
+                    <td><input type="text" class="form-control deliveryTitle"></td>
                     <td>
-                        <select class="form-select">
-                            <option value="DHL">DHL</option>
-                            <option value="FedEx">FedEx</option>
-                            <option value="UPS">UPS</option>
-                            <option value="USPS">USPS</option>
+                        <select class="form-select deliveryCompanyId">
+                            <option value="0">택배사 선택</option>
+                            <option value="1">CJ대한통운</option>
+                            <option value="2">우체국택배</option>
+                            <option value="3">로젠택배</option>
+                            <option value="4">한진택배</option>
+                            <option value="5">롯데택배</option>
                         </select>
                     </td>
-                    <td>
-                        <select class="form-select">
-                            <option value="Visible">Visible</option>
-                            <option value="Hidden">Hidden</option>
-                        </select>
-                    </td>
-                    <td><input type="text" class="form-control" placeholder="Enter tracking number"></td>
-                    <td>
-                        <button class="btn btn-danger btn-sm delete-row">X</button>
-                        <button class="btn btn-primary btn-sm connect-row">연결하기</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="form-control" placeholder="Enter name"></td>
-                    <td>
-                        <select class="form-select">
-                            <option value="DHL">DHL</option>
-                            <option value="FedEx">FedEx</option>
-                            <option value="UPS">UPS</option>
-                            <option value="USPS">USPS</option>
-                        </select>
-                    </td>
+                    <td><input type="text" class="form-control deliveryNumber"></td>
                     <td>
                         <select class="form-select">
                             <option value="Visible">Visible</option>
                             <option value="Hidden">Hidden</option>
                         </select>
                     </td>
-                    <td><input type="text" class="form-control" placeholder="Enter tracking number"></td>
                     <td>
-                        <button class="btn btn-danger btn-sm delete-row">X</button>
-                        <button class="btn btn-primary btn-sm connect-row">연결하기</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="form-control" placeholder="Enter name"></td>
-                    <td>
-                        <select class="form-select">
-                            <option value="DHL">DHL</option>
-                            <option value="FedEx">FedEx</option>
-                            <option value="UPS">UPS</option>
-                            <option value="USPS">USPS</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-select">
-                            <option value="Visible">Visible</option>
-                            <option value="Hidden">Hidden</option>
-                        </select>
-                    </td>
-                    <td><input type="text" class="form-control" placeholder="Enter tracking number"></td>
-                    <td>
-                        <button class="btn btn-danger btn-sm delete-row">X</button>
-                        <button class="btn btn-primary btn-sm connect-row">연결하기</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="form-control" placeholder="Enter name"></td>
-                    <td>
-                        <select class="form-select">
-                            <option value="DHL">DHL</option>
-                            <option value="FedEx">FedEx</option>
-                            <option value="UPS">UPS</option>
-                            <option value="USPS">USPS</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-select">
-                            <option value="Visible">Visible</option>
-                            <option value="Hidden">Hidden</option>
-                        </select>
-                    </td>
-                    <td><input type="text" class="form-control" placeholder="Enter tracking number"></td>
-                    <td>
-                        <button class="btn btn-danger btn-sm delete-row">X</button>
-                        <button class="btn btn-primary btn-sm connect-row">연결하기</button>
+                        <button class="btn btn-primary btn-sm save-row" id="saveDelivery">완료</button>
+                        <button class="btn btn-danger btn-sm delete-row">삭제</button>
+                        <button class="btn btn-light btn-sm connect-row">운송장조회</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <button class="btn btn-success" id="addRow">+ Add Row</button>
+            <button class="btn btn-primary" id="addRow">+ 추가</button>
+            <div class="mt-3 alert alert-secondary" role="alert">
+                현재 CJ대한통운만 이용 가능합니다.
+            </div>
         </div>
     </div>
 </div>
@@ -164,7 +106,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" th:src="@{/js/external/jquery-3.7.1.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" th:src="@{/js/external/bootstrap.bundle.min.js}"></script>
-<script>
+<!--TODO: 개별 JS파일로 분리 -->
+<script >
     $(document).ready(function() {
         // 초기 로그인 상태 확인 (여기서는 간단하게 로컬 스토리지 사용)
         const loggedInUser = localStorage.getItem('loggedInUser');
@@ -225,20 +168,61 @@
           </td>
           <td><input type="text" class="form-control" placeholder="Enter tracking number"></td>
           <td>
-            <button class="btn btn-danger btn-sm delete-row">X</button>
-            <button class="btn btn-primary btn-sm connect-row">연결하기</button>
+            <button class="btn btn-primary btn-sm save-row">완료</button>
+            <button class="btn btn-light btn-sm connect-row">운송장조회</button>
+            <button class="btn btn-danger btn-sm delete-row">삭제</button>
           </td>
         </tr>`;
             $('#tableBody').append(newRow);
         });
 
-        // 연결하기 버튼 클릭 이벤트
+        // 운송장조회 버튼 클릭 이벤트
         $(document).on('click', '.connect-row', function() {
-            // 여기에 연결하기 버튼 클릭 시 동작을 추가합니다.
-            alert('연결하기 버튼 클릭됨!');
+            // 여기에 운송장조회 버튼 클릭 시 동작을 추가합니다.
+            alert('운송장조회 버튼 클릭됨!');
         });
 
+        $('#saveDelivery').on('click', function() {
+            const row = $(this).closest('tr');
 
+            const deliveryTitle = row.find('.deliveryTitle').val();
+            const deliveryCompanyId = row.find('.deliveryCompanyId').val();
+            const deliveryNumber = row.find('.deliveryNumber').val();
+
+            // 유효성 체크
+            if (deliveryTitle === '') {
+                alert('택배 상품명을 입력해주세요');
+                return;
+            }
+            if (deliveryCompanyId === '0') {
+                alert('택배사를 선택해주세요');
+                return;
+            }
+            if (deliveryNumber === '') {
+                alert('운송장번호를 입력해주세요');
+                return;
+            }
+            
+            const requestData = {
+                title : deliveryTitle,
+                deliveryCompanyId : deliveryCompanyId,
+                deliveryNumber : deliveryNumber,
+                status : 1,
+                memberId: 1
+            };
+            $.ajax({
+                url: '/api/v1/delivery',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+                    alert('저장 완료');
+                },
+                error: function(error) {
+                    alert(`저장 실패: ${error}`);
+                }
+            });
+        })
 
     });
 
