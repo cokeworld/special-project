@@ -176,12 +176,6 @@
             $('#tableBody').append(newRow);
         });
 
-        // 운송장조회 버튼 클릭 이벤트
-        $(document).on('click', '.connect-row', function() {
-            // 여기에 운송장조회 버튼 클릭 시 동작을 추가합니다.
-            alert('운송장조회 버튼 클릭됨!');
-        });
-
         $('#saveDelivery').on('click', function() {
             const row = $(this).closest('tr');
 
@@ -222,44 +216,28 @@
                     alert(`저장 실패: ${error}`);
                 }
             });
-        })
+        });
+
+        $('.connect-row').on('click', function() {
+            const row = $(this).closest('tr');
+
+            const deliveryCompanyId = row.find('.deliveryCompanyId').val();
+            const deliveryNumber = row.find('.deliveryNumber').val();
+
+            // todo: deliveryCompanyId에 따라 url, params 분기처리
+            const url = `https://trace.cjlogistics.com/web/info.jsp`;
+            const params = {
+                slipno: deliveryNumber
+            };
+
+            const queryParams = new URLSearchParams(params);
+            const query = queryParams.toString();
+
+            window.open(`${url}?${query}`, '_blank');
+        });
 
     });
 
-    function ajaxTest() {
-        // $.post('/api/v1/delivery', {
-        //     title : 'test',
-        //     deliveryCompanyId : 1234,
-        //     deliveryNumber : 1,
-        //     status : 1,
-        //     memberId: 1
-        // })
-        //     .done(function (response) {
-        //         console.log(response);
-        //     })
-        //     .fail(function () {
-        //         console.log(error);
-        //     })
-
-        $.ajax({
-            url: '/api/v1/delivery',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                title : 'test',
-                deliveryCompanyId : 1234,
-                deliveryNumber : 1,
-                status : 1,
-                memberId: 1
-            }),
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    }
 </script>
 </body>
 </html>
