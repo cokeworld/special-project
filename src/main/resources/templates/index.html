@@ -10,7 +10,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Bulletin Board</a>
+    <a class="navbar-brand" href="#">택배맨📦</a>
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
             <li class="nav-item" id="loginBtnContainer">
@@ -32,43 +32,37 @@
 
                 <thead>
                 <tr>
+                    <th scope="col">#</th>
                     <th scope="col">택배 상품</th>
                     <th scope="col">택배사</th>
                     <th scope="col">운송장번호</th>
-                    <th scope="col">노출</th>
+<!--                    <th scope="col">노출</th>-->
                     <th scope="col"></th>
                 </tr>
                 </thead>
 
+<!--                TODO: delivery model 변수로 뿌려주기-->
                 <tbody id="tableBody">
-                <tr>
-                    <td><input type="text" class="form-control deliveryTitle"></td>
+                <tr th:each="delivery : ${deliveries}">
+                    <td><p th:text="${delivery.id}"></p></td>
+                    <td><p th:text="${delivery.title}"></p></td>
+                    <td><p class="deliveryCompanyId" th:text="${delivery.deliveryCompanyId}" th:attr="data-deliverycompanyid=${delivery.deliveryCompanyId}"></p></td>
+                    <td><p class="deliveryNumber" th:text="${delivery.deliveryNumber}"></p></td>
+<!--                    <td>-->
+<!--                        <select class="form-select">-->
+<!--                            <option value="Visible">Visible</option>-->
+<!--                            <option value="Hidden">Hidden</option>-->
+<!--                        </select>-->
+<!--                    </td>-->
                     <td>
-                        <select class="form-select deliveryCompanyId">
-                            <option value="0">택배사 선택</option>
-                            <option value="1">CJ대한통운</option>
-                            <option value="2">우체국택배</option>
-                            <option value="3">로젠택배</option>
-                            <option value="4">한진택배</option>
-                            <option value="5">롯데택배</option>
-                        </select>
-                    </td>
-                    <td><input type="text" class="form-control deliveryNumber"></td>
-                    <td>
-                        <select class="form-select">
-                            <option value="Visible">Visible</option>
-                            <option value="Hidden">Hidden</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm save-row" id="saveDelivery">완료</button>
-                        <button class="btn btn-danger btn-sm delete-row">삭제</button>
-                        <button class="btn btn-light btn-sm connect-row">운송장조회</button>
+                        <button class="btn btn-outline-primary btn-sm connect-row">운송장 조회</button>
+                        <button class="btn btn-outline-success btn-sm connect-row">수정</button>
+                        <button class="btn btn-outline-danger btn-sm delete-row">X</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <button class="btn btn-primary" id="addRow">+ 추가</button>
+            <button id="addDelivery" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#saveModal">+ 추가</button>
             <div class="mt-3 alert alert-secondary" role="alert">
                 현재 CJ대한통운만 이용 가능합니다.
             </div>
@@ -104,140 +98,60 @@
     </div>
 </div>
 
+<!-- Save Modal -->
+<div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saveModalLabel">등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="saveForm">
+                    <div class="form-group mb-3">
+                        <label for="saveDeliveryTitle">상품명</label>
+                        <input type="text" class="form-control" id="saveDeliveryTitle" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="saveDeliveryCompanyId">택배사</label>
+                        <select class="form-select" id="saveDeliveryCompanyId">
+                            <option value="0">택배사 선택</option>
+                            <option value="1">CJ대한통운</option>
+                            <option value="2">우체국택배</option>
+                            <option value="3">로젠택배</option>
+                            <option value="4">한진택배</option>
+                            <option value="5">롯데택배</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="saveDeliveryNumber">운송장번호</label>
+                        <input type="text" class="form-control" id="saveDeliveryNumber" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="saveDelivery">저장</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">취소</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 토스트 알림 -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="saveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="..." class="rounded me-2" alt="...">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>Just now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            저장 완료
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" th:src="@{/js/external/jquery-3.7.1.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" th:src="@{/js/external/bootstrap.bundle.min.js}"></script>
-<!--TODO: 개별 JS파일로 분리 -->
-<script >
-    $(document).ready(function() {
-        // 초기 로그인 상태 확인 (여기서는 간단하게 로컬 스토리지 사용)
-        const loggedInUser = localStorage.getItem('loggedInUser');
-        if (loggedInUser) {
-            $('#userName').text(loggedInUser);
-            $('#loginBtnContainer').addClass('d-none');
-            $('#userContainer').removeClass('d-none');
-        }
-
-        // 로그인 폼 제출 이벤트
-        $('#loginForm').on('submit', function(event) {
-            event.preventDefault(); // 폼 제출 기본 동작 방지
-            const userId = $('#loginId').val();
-            const password = $('#loginPassword').val();
-
-            // 여기에 실제 인증 로직을 추가해야 합니다.
-            // 예시로 간단히 사용자 이름을 저장
-            if (userId && password) {
-                localStorage.setItem('loggedInUser', userId);
-                $('#userName').text(userId);
-                $('#loginBtnContainer').addClass('d-none');
-                $('#userContainer').removeClass('d-none');
-                $('#loginModal').modal('hide');
-                $('#loginForm')[0].reset();
-            }
-        });
-
-        // 로그아웃 버튼 클릭 이벤트
-        $('#logoutBtn').on('click', function() {
-            localStorage.removeItem('loggedInUser');
-            $('#loginBtnContainer').removeClass('d-none');
-            $('#userContainer').addClass('d-none');
-        });
-
-        // 행 삭제 버튼 클릭 이벤트
-        $(document).on('click', '.delete-row', function() {
-            $(this).closest('tr').remove();
-        });
-
-        // 행 추가 버튼 클릭 이벤트
-        $('#addRow').on('click', function() {
-            const newRow = `
-        <tr>
-          <td><input type="text" class="form-control" placeholder="Enter name"></td>
-          <td>
-            <select class="form-select">
-              <option value="DHL">DHL</option>
-              <option value="FedEx">FedEx</option>
-              <option value="UPS">UPS</option>
-              <option value="USPS">USPS</option>
-            </select>
-          </td>
-          <td>
-            <select class="form-select">
-              <option value="Visible">Visible</option>
-              <option value="Hidden">Hidden</option>
-            </select>
-          </td>
-          <td><input type="text" class="form-control" placeholder="Enter tracking number"></td>
-          <td>
-            <button class="btn btn-primary btn-sm save-row">완료</button>
-            <button class="btn btn-light btn-sm connect-row">운송장조회</button>
-            <button class="btn btn-danger btn-sm delete-row">삭제</button>
-          </td>
-        </tr>`;
-            $('#tableBody').append(newRow);
-        });
-
-        $('#saveDelivery').on('click', function() {
-            const row = $(this).closest('tr');
-
-            const deliveryTitle = row.find('.deliveryTitle').val();
-            const deliveryCompanyId = row.find('.deliveryCompanyId').val();
-            const deliveryNumber = row.find('.deliveryNumber').val();
-
-            // 유효성 체크
-            if (deliveryTitle === '') {
-                alert('택배 상품명을 입력해주세요');
-                return;
-            }
-            if (deliveryCompanyId === '0') {
-                alert('택배사를 선택해주세요');
-                return;
-            }
-            if (deliveryNumber === '') {
-                alert('운송장번호를 입력해주세요');
-                return;
-            }
-            
-            const requestData = {
-                title : deliveryTitle,
-                deliveryCompanyId : deliveryCompanyId,
-                deliveryNumber : deliveryNumber,
-                status : 1,
-                memberId: 1
-            };
-            $.ajax({
-                url: '/api/v1/delivery',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(requestData),
-                success: function(response) {
-                    alert('저장 완료');
-                },
-                error: function(error) {
-                    alert(`저장 실패: ${error}`);
-                }
-            });
-        });
-
-        $('.connect-row').on('click', function() {
-            const row = $(this).closest('tr');
-
-            const deliveryCompanyId = row.find('.deliveryCompanyId').val();
-            const deliveryNumber = row.find('.deliveryNumber').val();
-
-            // todo: deliveryCompanyId에 따라 url, params 분기처리
-            const url = `https://trace.cjlogistics.com/web/info.jsp`;
-            const params = {
-                slipno: deliveryNumber
-            };
-
-            const queryParams = new URLSearchParams(params);
-            const query = queryParams.toString();
-
-            window.open(`${url}?${query}`, '_blank');
-        });
-
-    });
-
-</script>
+<script src="../static/js/main.js" th:src="@{/js/main.js}"></script>
 </body>
 </html>

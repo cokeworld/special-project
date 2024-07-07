@@ -14,4 +14,8 @@
         SELECT * FROM delivery WHERE id = #{id}
     </select>
 
+    <select id="findAllDesc" resultType="taekyeong.specialproject.domain.Delivery">
+        SELECT * FROM delivery ORDER BY id DESC LIMIT 100
+    </select>
+
 </mapper>
