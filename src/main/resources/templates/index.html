@@ -44,8 +44,8 @@
 <!--                TODO: delivery model 변수로 뿌려주기-->
                 <tbody id="tableBody">
                 <tr th:each="delivery : ${deliveries}">
-                    <td><p th:text="${delivery.id}"></p></td>
-                    <td><p th:text="${delivery.title}"></p></td>
+                    <td><p class="deliveryId" th:text="${delivery.id}"></p></td>
+                    <td><p class="deliveryTitle" th:text="${delivery.title}"></p></td>
                     <td><p class="deliveryCompanyId" th:text="${delivery.deliveryCompanyId}" th:attr="data-deliverycompanyid=${delivery.deliveryCompanyId}"></p></td>
                     <td><p class="deliveryNumber" th:text="${delivery.deliveryNumber}"></p></td>
 <!--                    <td>-->
@@ -55,9 +55,9 @@
 <!--                        </select>-->
 <!--                    </td>-->
                     <td>
-                        <button class="btn btn-outline-primary btn-sm connect-row">운송장 조회</button>
-                        <button class="btn btn-outline-success btn-sm connect-row">수정</button>
-                        <button class="btn btn-outline-danger btn-sm delete-row">X</button>
+                        <button class="btn btn-outline-primary btn-sm connectDeliveryButton">운송장 조회</button>
+                        <button class="btn btn-outline-success btn-sm openDeliveryEditModalButton" data-bs-toggle="modal" data-bs-target="#editModal">수정</button>
+                        <button class="btn btn-outline-danger btn-sm deleteDeliveryButton">X</button>
                     </td>
                 </tr>
                 </tbody>
@@ -98,7 +98,7 @@
     </div>
 </div>
 
-<!-- Save Modal -->
+<!-- 저장 모달(Modal) -->
 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -112,6 +112,7 @@
                         <label for="saveDeliveryTitle">상품명</label>
                         <input type="text" class="form-control" id="saveDeliveryTitle" required>
                     </div>
+                    <!-- todo: db에서 읽어온 후 타임리프 for 루프로 노출-->
                     <div class="form-group mb-3">
                         <label for="saveDeliveryCompanyId">택배사</label>
                         <select class="form-select" id="saveDeliveryCompanyId">
@@ -135,7 +136,46 @@
     </div>
 </div>
 
-<!-- 토스트 알림 -->
+<!-- 수정 모달(Modal) -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group mb-3">
+                        <label for="editDeliveryTitle">상품명</label>
+                        <input type="text" class="form-control" id="editDeliveryTitle" required>
+                    </div>
+                    <!-- todo: db에서 읽어온 후 타임리프 for 루프로 노출-->
+                    <div class="form-group mb-3">
+                        <label for="editDeliveryCompanyId">택배사</label>
+                        <select class="form-select" id="editDeliveryCompanyId">
+                            <option value="0">택배사 선택</option>
+                            <option value="1">CJ대한통운</option>
+                            <option value="2">우체국택배</option>
+                            <option value="3">로젠택배</option>
+                            <option value="4">한진택배</option>
+                            <option value="5">롯데택배</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="editDeliveryNumber">운송장번호</label>
+                        <input type="text" class="form-control" id="editDeliveryNumber" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="editDelivery">수정</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">취소</button>
+                    <input type="hidden" id="editDeliveryId">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 토스트 알림 : 문구만 바꿔서 재활용 예정-->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
     <div id="saveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
